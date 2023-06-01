@@ -42,7 +42,7 @@ class UserController extends Controller
                         ->numbers() // au moins un chiffre
                         ->symbols() // au moins un caractère spécial parmi ! @ # $ % ^ & * ?  
                 ],
-                'image' => 'required|image|mimes:jpg,jpeg,png,svg|max:2048'
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
             ],
             // message d'erreur pour mdp trop court (n'est pas présent par défaut)
             [
@@ -52,7 +52,7 @@ class UserController extends Controller
 
         // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
         if ($validator->fails()) {
-            return $this->sendError('Error validation', $validator->errors());
+            return response()->json($validator->errors(), 400);
         }
 
         // sauvegarde utilisateur en bdd
@@ -74,7 +74,7 @@ class UserController extends Controller
         unset($user->password);
 
         // on retourne l'utilisateur créé en json avec un code de succès (201)
-        return response()->json($user, 201);
+        return response()->json([$user, 'Utilisateur créé avec succès'], 201);
     }
 
 
@@ -106,11 +106,13 @@ class UserController extends Controller
                     ->letters()  // au moins une lettre
                     ->numbers() // au moins un chiffre
                     ->symbols() // au moins un caractère spécial     
-            ]
+            ],
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
         ]);
 
+        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
         if ($validator->fails()) {
-            return $this->sendError('Error validation', $validator->errors());
+            return response()->json($validator->errors(), 400);
         }
 
         // On modifie les informations de l'utilisateur
@@ -138,12 +140,12 @@ class UserController extends Controller
 
                 // sinon => on renvoie une erreur
             } else {
-                return $this->sendError('Error validation', ['mot de passe actuel non renseigné ou incorrect']);
+                return response()->json(['mot de passe actuel non renseigné ou incorrect'], 400);
             }
         }
 
-        // On retourne la réponse JSON avec un code de succès (204 = modification réussie)
-        return response()->json($user, 204);
+        // On retourne la réponse JSON
+        return response()->json([$user, 'Utilisateur modifié avec succès']);
     }
 
 
@@ -156,7 +158,6 @@ class UserController extends Controller
         $user->delete();
 
         // on retourne la réponse contenant l'utilisateur supprimé
-        return response()->json($user);
-
+        return response()->json([$user, 'Utilisateur supprimé']);
     }
 }

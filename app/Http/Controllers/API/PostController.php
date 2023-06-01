@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -13,7 +14,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        // On récupère tous les posts
+        $posts = Post::all();
+
+        // On retourne les posts en JSON 
+        return response()->json($posts);
     }
 
     /**
@@ -21,7 +26,32 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'content' => 'required|min:15|max:3000',
+                'tags' => 'required|min:5|max:50',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
+            ],
+        );
+
+        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // sauvegarde du post en bdd
+        $post = Post::create($request->all());
+
+        // sauvegarde de l'image (si envoyée)
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+        }
+
+        // on retourne le post créé en json avec un code de succès (201)
+        return response()->json([$post, 'Message créé avec succès'], 201);
     }
 
     /**
@@ -29,7 +59,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return response()->json($post);
     }
 
     /**
@@ -37,7 +67,32 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'content' => 'required|min:15|max:3000',
+                'tags' => 'required|min:5|max:50',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
+            ],
+        );
+
+        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // sauvegarde utilisateur en bdd
+        $post->update($request->all());
+
+        // sauvegarde de l'image (si envoyée)
+        if ($request->image) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+        }
+
+        // On retourne la réponse JSON
+        return response()->json([$post, 'Message modifié avec succès']);
     }
 
     /**
@@ -45,6 +100,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return response()->json([$post, 'Message supprimé']);
     }
 }

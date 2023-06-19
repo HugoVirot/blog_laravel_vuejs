@@ -9,6 +9,12 @@ window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// implémentation de Sanctum => 2ème méthode : SPA Authentication
+// grâce à cette ligne de code, axios envoie automatiquement le cookie de session Laravel à chaque requête
+// but => authentifier les requêtes
+// cette ligne permet également d'éviter le problème de CORS
+window.axios.defaults.withCredentials = true;
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

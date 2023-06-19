@@ -21,6 +21,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// ****************** Inscription et connexion ****************
+
+// inscription 
+Route::post('register', [App\Http\Controllers\API\UserController::class, 'store'])->name('register');
+
+// connexion 
+Route::post('login', [App\Http\Controllers\API\LoginController::class, 'login'])->name('login');
+
+
 // route ressource users
 Route::apiResource("users", UserController::class);
 

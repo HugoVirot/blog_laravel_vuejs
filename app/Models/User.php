@@ -39,6 +39,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //charger automatiquement les posts de l'utilisateur
+    protected $with = ['posts'];
+
     // nom au pluriel car un user peut poster plusieurs quacks
     // cardinalité 0,n
     public function posts()

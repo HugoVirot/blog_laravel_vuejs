@@ -8,7 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
-{
+{    
+    // middleware sanctum pour exiger soit le token, soit le cookie de session
+    // appliqué sur toutes les routes sauf store
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except('index', 'store');
+    }
+
     /**
      * Display a listing of the resource.
      */

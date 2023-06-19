@@ -11,6 +11,12 @@ use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
+    // middleware sanctum pour exiger soit le token, soit le cookie de session
+    // appliqué sur toutes les routes sauf store
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except('store');
+    }
     /**
      * Display a listing of the resource.
      */

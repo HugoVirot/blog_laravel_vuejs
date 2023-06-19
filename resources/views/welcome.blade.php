@@ -11,7 +11,11 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    @vite(['resources/js/app.js'])
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/6259f9b52f.js" crossorigin="anonymous"></script>
+
+    <!-- Script Vite : pour compiler et utiliser les fichiers css et js -->
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 </head>
 
 <body>

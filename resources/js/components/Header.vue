@@ -8,8 +8,9 @@
 
             <div class="d-flex flex-column mx-auto text-center">
                 <router-link to="/">
-                    <img id="logo" alt="logo" src="images/logo.png" />
+                    <img id="logo" alt="logo" src="images/logo.png" class="w-25"/>
                 </router-link>
+                <p class="text-white fs-3">Blog Laravel Vue JS</p>
             </div>
 
             <div class="mt-3 d-none d-md-block" id="rightstripe"></div>
@@ -121,6 +122,10 @@ header {
 a {
     text-decoration: none;
     color: inherit
+}
+
+p {
+    font-family: 'Source Code Pro', sans-serif
 }
 
 </style>

@@ -15,10 +15,10 @@ import router from './router'
 
 //on importe pinia et le plugin de persistance du state
 import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
 
 //on les initialise
-const pinia = createPinia()
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 pinia.use(piniaPluginPersistedstate)
 
 // On monte l'application Vue sur l'élément #app

@@ -4,7 +4,7 @@
         <div class="row text-center">
             <h4>#{{ comment.tags }}</h4>
         </div>
-        <div class="card-header row px-5 bg-info">
+        <div class="card-header row px-5 bg-light">
             <div class="col-6">
                 posté par {{ comment.user.pseudo }}
             </div>

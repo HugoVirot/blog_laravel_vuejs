@@ -20,7 +20,7 @@ class Post extends Model
 
     // je charge automatiquement l'utilisateur à chaque fois que je récupère un message
     // EAGER LOADING automatique
-    protected $with = ['user', 'comments'];
+    // protected $with = ['user', 'comments'];
 
     // nom de la fonction au singulier car 1 seul user en relation
     // cardinalité 1,1

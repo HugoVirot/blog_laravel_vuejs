@@ -19,7 +19,7 @@ export default {
 
     created() {
         axios.get("http//localhost/api/users/" + this.$route.params.id)
-            .then(response => this.user = response.data.data)
+            .then(response => this.user = response.data)
             .catch(error => console.log(error.response));
     }
 }

@@ -13,7 +13,7 @@ class PostController extends Controller
     // appliqué sur toutes les routes sauf store
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index', 'store');
+        // $this->middleware('auth:sanctum')->except('index', 'store');
     }
 
     /**
@@ -22,8 +22,11 @@ class PostController extends Controller
     public function index()
     {
         // On récupère tous les posts
-        $posts = Post::all();
+        $posts = Post::latest()->get();
 
+        // on charge leurs auteurs et leurs commentaires (avec auteurs)
+        $posts->load('user', 'comments.user');
+        
         // On retourne les posts en JSON 
         return response()->json($posts);
     }

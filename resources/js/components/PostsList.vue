@@ -9,7 +9,7 @@
 <script>
 import Post from './Post.vue'
 import { usePostStore } from '../stores/postStore'
-import { mapState } from "pinia"
+import { mapState, mapActions } from "pinia"
 
 export default {
     components: { Post },
@@ -18,9 +18,13 @@ export default {
         ...mapState(usePostStore, ['posts'])
     },
 
+    methods: {
+        ...mapActions(usePostStore, ['storePosts'])
+    },
+
     created() {
         axios.get("http://localhost:8000/api/posts")
-            .then(response => storePosts(response.data))
+            .then(response => this.storePosts(response.data))
             .catch(error => console.log(error))
     }
 }

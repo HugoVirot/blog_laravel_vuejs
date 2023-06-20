@@ -74,6 +74,8 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+        $this->authorize('update', $comment);
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -107,6 +109,8 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
+        $this->authorize('delete', $comment);
+
         $comment->delete();
         return response()->json([$comment, 'Commentaire supprimé']);
     }

@@ -33,7 +33,7 @@
                 </div>
                 <!--******************************************** bouton supprimer ******************************************-->
                 <div class="col-6 text-center">
-                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                    <button @click="deletePost()" class="btn btn-danger">Supprimer</button>
                 </div>
             </div>
 
@@ -50,6 +50,25 @@ export default {
     props: ['post'],
     components: {
         CommentsList
+    },
+    methods: {
+
+        deletePost() {
+
+            axios.delete("http://localhost:8000/api/posts/" + this.post.id)
+                .then(response => {
+                    alert("Suppression réussie !")
+                    this.$router.push('/')
+                })
+                .catch(error => {
+                    if (error.response.status == "403") {
+                        alert("Vous n'avez pas l'autorisation de supprimer ce message !")
+                        this.$router.push('/')
+                    } else {
+                        console.log(error.response)
+                    }
+                })
+        }
     }
 }
 </script>

@@ -77,6 +77,8 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $this->authorize('update', $post);
+
         $validator = Validator::make(
             $request->all(),
             [
@@ -110,6 +112,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        $this->authorize('delete', $post);
+
         $post->delete();
         return response()->json([$post, 'Message supprimé']);
     }

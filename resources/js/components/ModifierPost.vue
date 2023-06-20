@@ -56,8 +56,6 @@
 <script>
 import axios from 'axios'
 import ValidationErrors from "./ValidationErrors.vue"
-import { useUserStore } from '../stores/userStore'
-import { mapState } from 'pinia'
 
 export default {
 
@@ -70,24 +68,25 @@ export default {
         }
     },
 
-    computed: {
-        ...mapState(useUserStore, ['id'])
-    },
-
     components: { ValidationErrors },
 
     methods: {
 
         editPost() {
             // on tente la connexion
-            axios.put('http://localhost:8000/api/posts/' + this.postId, { content: this.content, tags: this.tags})
+            axios.put('http://localhost:8000/api/posts/' + this.postId, { content: this.content, tags: this.tags })
 
                 .then(response => {
                     alert("Message modifié avec succès !")
                     this.$router.push('/')
 
                 }).catch((error) => {
-                    this.validationErrors = error.response.data.errors
+                    if (error.response.status == "403") {
+                        alert("Vous n'avez pas l'autorisation de modifier ce message !")
+                        this.$router.push('/')
+                    } else {
+                        this.validationErrors = error.response.data.errors
+                    }
                 })
         },
     },
@@ -99,9 +98,7 @@ export default {
                 this.content = response.data.content
                 this.tags = response.data.tags
 
-            }).catch((error) => {
-                console.log(error.response);
-            })
+            }).catch(error => console.log(error.response))
     }
 }
 </script>

@@ -5,6 +5,7 @@ import Profil from "./components/Profil.vue"
 import Connexion from "./components/Connexion.vue"
 import Inscription from "./components/Inscription.vue"
 import Politique from "./components/Politique.vue"
+import ModifierPost from "./components/ModifierPost.vue"
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
     path: "/profil/:id",
     component: Profil,
+  },
+  {
+    path: "/modifierpost/:id",
+    component: ModifierPost,
   }
 ];
 

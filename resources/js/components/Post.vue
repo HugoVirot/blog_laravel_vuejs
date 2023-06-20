@@ -27,7 +27,9 @@
             <div class="row mt-3">
                 <!--********************** bouton modifier => mène à la page de modification du message ********************-->
                 <div class="col-6 text-center">
-                    <button class="btn btn-info mx-auto">modifier</button>
+                    <router-link :to="`modifierpost/${post.id}`">
+                        <button class="btn btn-info mx-auto">modifier</button>
+                    </router-link>
                 </div>
                 <!--******************************************** bouton supprimer ******************************************-->
                 <div class="col-6 text-center">

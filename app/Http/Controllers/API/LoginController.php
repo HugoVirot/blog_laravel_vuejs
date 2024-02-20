@@ -27,14 +27,12 @@ class LoginController extends Controller
 
             // on lui crée un token de session via la fonction createToken
             // le token est hashé en Sha-256 avant d'être enregistré dans la table personnal_access_tokens
-            // on le stocke dans $success ainsi que ses autres infos renvoyées en json
-            $authUser->token = $authUser->createToken('LoginUser' . $authUser->id)->plainTextToken;
-
-            // on retire le mot de passe de l'utilisateur que l'on va renvoyer en json (certes hashé mais confidentiel)
-            unset($authUser->password);
+            // on le stocke en clair (grâce à plaintexttoken) pour le renvoyer ensuite en json
+            $authUser->token = $authUser->createToken('TokenDuUser' . $authUser->id)->plainTextToken;
 
             // on renvoie la réponse 
             return response()->json([$authUser, 'Vous êtes connecté']);
+
         } else {
             // si échec de la connexion, on renvoie un message d'erreur
             return response()->json(['Echec de la connexion.', 'errors' => 'L\'utilisateur n\'existe pas ou le mot de passe est incorrect']);

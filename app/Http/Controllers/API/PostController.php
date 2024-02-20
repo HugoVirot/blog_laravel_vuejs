@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
-{    
+{
     // middleware sanctum pour exiger soit le token, soit le cookie de session
     // appliqué sur toutes les routes sauf store
     public function __construct()
     {
-        // $this->middleware('auth:sanctum')->except('index', 'store');
+        // $this->middleware('auth:sanctum')->except('index');
     }
 
     /**
@@ -21,12 +21,12 @@ class PostController extends Controller
      */
     public function index()
     {
-        // On récupère tous les posts
+        // On récupère tous les posts (le + récent en 1er)
         $posts = Post::latest()->get();
 
         // on charge leurs auteurs et leurs commentaires (avec auteurs)
         $posts->load('user', 'comments.user');
-        
+
         // On retourne les posts en JSON 
         return response()->json($posts);
     }

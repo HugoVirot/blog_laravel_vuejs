@@ -15,6 +15,12 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 // cette ligne permet également d'éviter le problème de CORS
 window.axios.defaults.withCredentials = true;
 
+// afficher chaque requête en console
+window.axios.interceptors.request.use(request => {
+  console.log('Starting Request', JSON.stringify(request, null, 2))
+  return request
+})
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting

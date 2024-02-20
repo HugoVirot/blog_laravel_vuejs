@@ -26,9 +26,12 @@ class UserController extends Controller
         $users = User::all();
 
         // On retourne les utilisateurs en JSON 
-        return response()->json($users);
+        return response()->json([
+            'status' => true,
+            'message' => 'Utilisateurs récupérés avec succès',
+            'users' => $users
+        ]);
     }
-
 
     /**
      * Store a newly created resource in storage.

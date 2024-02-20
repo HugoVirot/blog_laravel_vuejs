@@ -6,6 +6,7 @@ import Connexion from "./components/Connexion.vue"
 import Inscription from "./components/Inscription.vue"
 import Politique from "./components/Politique.vue"
 import ModifierPost from "./components/ModifierPost.vue"
+import HelloWorld from "./components/HelloWorld.vue"
 
 const routes = [
   {
@@ -36,7 +37,11 @@ const routes = [
   {
     path: "/modifierpost/:id",
     component: ModifierPost,
-  }
+  },
+  {
+    path: "/helloworld",
+    component: HelloWorld,
+  },
 ];
 
 const router = createRouter({

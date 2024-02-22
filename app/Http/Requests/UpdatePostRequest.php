@@ -38,9 +38,9 @@ class UpdatePostRequest extends FormRequest
             'content.max' => 'Le contenu ne doit pas dépasser 3000 caractères.',
             //critères tags
             'tags.required' => 'Les tags sont requis.',
-            'tags.string' => 'Les tags doivet être une chaîne de caractères.',
-            'tags.min' => 'Les tags doivent faire au moins 15 caractères.',
-            'tags.max' => 'Les tags ne doivent pas dépasser 3000 caractères.',
+            'tags.string' => 'Les tags doivent être une chaîne de caractères.',
+            'tags.min' => 'Les tags doivent faire au moins 5 caractères.',
+            'tags.max' => 'Les tags ne doivent pas dépasser 50 caractères.',
             //critères image
             'image.image' => 'L\'image doit être un fichier de type image.',
             'image.mimes' => 'L\'image doit être un fichier de type jpg, jpeg, png ou svg.',

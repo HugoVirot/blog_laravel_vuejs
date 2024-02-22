@@ -84,6 +84,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        // policy pour vérifier que l'utilisateur peut modifier le compte
+        $this->authorize('update', $user);
 
         // On modifie les informations de l'utilisateur
         $user->update([
@@ -132,6 +134,9 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // policy pour vérifier que l'utilisateur peut supprimer le compte
+        $this->authorize('delete', $user);
+
         // on supprimer l'utilisateur en base de données
         $user->delete();
 

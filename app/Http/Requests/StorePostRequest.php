@@ -22,12 +22,10 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            [
-                'content' => 'required|string|min:15|max:3000',
-                'tags' => 'required|string|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
-                'user_id' => 'required'
-            ],
+            'content' => 'required|min:15|max:3000',
+            'tags' => 'required|min:5|max:50',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048',
+            'user_id' => 'required|integer'
         ];
     }
 
@@ -41,9 +39,9 @@ class StorePostRequest extends FormRequest
             'content.max' => 'Le contenu ne doit pas dépasser 3000 caractères.',
             //critères tags
             'tags.required' => 'Les tags sont requis.',
-            'tags.string' => 'Les tags doivet être une chaîne de caractères.',
-            'tags.min' => 'Les tags doivent faire au moins 15 caractères.',
-            'tags.max' => 'Les tags ne doivent pas dépasser 3000 caractères.',
+            'tags.string' => 'Les tags doivent être une chaîne de caractères.',
+            'tags.min' => 'Les tags doivent faire au moins 5 caractères.',
+            'tags.max' => 'Les tags ne doivent pas dépasser 50 caractères.',
             //critères image
             'image.image' => 'L\'image doit être un fichier de type image.',
             'image.mimes' => 'L\'image doit être un fichier de type jpg, jpeg, png ou svg.',

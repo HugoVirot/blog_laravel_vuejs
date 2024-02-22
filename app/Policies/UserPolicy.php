@@ -2,13 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Post;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PostPolicy
+class UserPolicy
 {
-    use HandlesAuthorization;
 
     // vérification que le user est bien admin
     // si oui => il a le droit de tout faire
@@ -24,10 +21,10 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, User $userToUpdate)
     {
-        // seul l'auteur du message peut le modifier
-        return $user->id == $post->user_id; 
+        // seul l'utilisateur lui-même peut modifier son profil
+        return $user->id == $userToUpdate->id;
     }
 
     /**
@@ -37,9 +34,9 @@ class PostPolicy
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, User $userToDelete)
     {
-        // seul l'auteur du message peut le supprimer
-        return $user->id == $post->user_id;
+        // seul l'utilisateur lui-même peut supprimer son compte
+        return $user->id == $userToDelete->id;
     }
 }

@@ -50,6 +50,12 @@ return array(
     ),
     "not_in"           => "Le champ :attribute sélectionné n'est pas valide.",
     "numeric"          => "Le champ :attribute doit contenir un nombre.",
+    'password' => [
+        'letters' => 'Le mot de passe doit contenir au moins une lettre.',
+        'mixed' => 'Le mot de passe doit contenir au moins une minuscule et une majuscule.',
+        'numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
+        'symbols' => 'Le mot de passe doit contenir au moins un caractère spécial parmi ! @ # $ % ^ & * ?.',
+    ],
     "regex"            => "Le format du champ :attribute est invalide.",
     "required"         => "Le champ :attribute est obligatoire.",
     "required_if"      => "Le champ :attribute est obligatoire quand la valeur de :other est :value.",

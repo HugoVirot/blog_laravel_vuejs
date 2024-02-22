@@ -52,7 +52,6 @@ class StoreUserRequest extends FormRequest
             'email.unique' => 'Email déjà utilisé.',
             'password.required' => 'Le mot de passe est requis.',
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
-            'password.min' => 'Le mot de passe doit faire au moins 8 caractères.',
             'password.confirmed' => 'Confirmation du mot de passe incorrecte.',
         ];
     }

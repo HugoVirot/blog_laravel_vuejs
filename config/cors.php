@@ -19,6 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
+    // si * / localhost / localhost:8000 / localhost:8000/api => problème de cookies
     'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
@@ -28,7 +29,9 @@ return [
     'exposed_headers' => [],
 
     'max_age' => 0,
-
-    'supports_credentials' => false,
+// Doc Laravel : You should ensure that your application's CORS configuration is returning the Access-Control-Allow-Credentials 
+// header with a value of True. This may be accomplished by setting the supports_credentials option within your application's 
+// config/cors.php configuration file to true.
+    'supports_credentials' => true,
 
 ];

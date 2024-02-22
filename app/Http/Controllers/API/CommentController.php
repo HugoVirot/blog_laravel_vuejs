@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCommentRequest;
+use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
-    // middleware sanctum pour exiger soit le token, soit le cookie de session
-    // appliqué sur toutes les routes sauf store
+    // middleware sanctum pour exiger une preuve de connexion : soit le token, soit le cookie csrf
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index', 'store');
+        $this->middleware('auth:sanctum');
     }
 
     /**
@@ -21,32 +22,23 @@ class CommentController extends Controller
      */
     public function index()
     {
-        // On récupère tous les posts
-        $posts = Comment::all();
+        // On récupère tous les commentaires
+        $comments = Comment::all();
 
         // On retourne les posts en JSON 
-        return response()->json($posts);
+        return response()->json([
+            'status' => true,
+            'message' => 'Commentaires récupérés avec succès',
+            'comments' => $comments
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:15|max:3000',
-                'tags' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         // sauvegarde commentaire en bdd
         $comment = Comment::create($request->all());
 
@@ -58,37 +50,35 @@ class CommentController extends Controller
         }
 
         // on retourne le commentaire créé en json avec un code de succès (201)
-        return response()->json([$comment, 'Commentaire créé avec succès'], 201);
+        return response()->json([
+            'status' => true,
+            'message' => 'Commentaire créé avec succès',
+            'comment' => $comment
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Comment $comment)
     {
-        return response()->json($comment);
+        // on retourne le commentaire en json 
+        return response()->json([
+            'status' => true,
+            'message' => 'Commentaire récupéré avec succès',
+            'comment' => $comment
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(UpdateCommentRequest $request, Comment $comment)
     {
+        // policy pour vérifier que l'utilisateur peut modifier le commentaire
         $this->authorize('update', $comment);
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:15|max:3000',
-                'tags' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
 
         // sauvegarde des modifications en bdd
         $comment->update($request->all());
@@ -101,17 +91,28 @@ class CommentController extends Controller
         }
 
         // On retourne la réponse JSON
-        return response()->json([$comment, 'Commentaire modifié avec succès']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Commentaire modifié avec succès',
+            'comment' => $comment
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Comment $comment)
     {
+        // policy pour vérifier que l'utilisateur peut supprimer le commentaire
         $this->authorize('delete', $comment);
 
-        $comment->delete();
-        return response()->json([$comment, 'Commentaire supprimé']);
+        $comment->delete(); // suppression commentaire via syntaxe Eloquent
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Commentaire supprimé',
+            'comment' => $comment
+        ]);
     }
 }

@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;  // tous les utilisateurs peuvent s'inscrire
+        return true;
     }
 
     /**
@@ -23,15 +23,15 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pseudo' => 'required|string|min:4|max:25|unique:users',
-            'email' => 'required|email|min:7|max:50|unique:users',
+            'email' => 'required|email|max:50',
+            'oldPassword' => 'nullable',
             'password' => [
-                'required', 'confirmed', 'string',
+                'nullable', 'confirmed',
                 Password::min(8) // minimum 8 caractères   
                     ->mixedCase() // au moins 1 minuscule et une majuscule
                     ->letters()  // au moins une lettre
                     ->numbers() // au moins un chiffre
-                    ->symbols() // au moins un caractère spécial parmi ! @ # $ % ^ & * ?  
+                    ->symbols() // au moins un caractère spécial     
             ],
             'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
         ];

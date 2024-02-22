@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
-    // middleware sanctum pour exiger soit le token, soit le cookie de session
-    // appliqué sur toutes les routes sauf store
+    // middleware sanctum pour exiger une preuve de connexion : soit le token, soit le cookie csrf
+    // appliqué sur toutes les routes sauf index (pas besoin d'être connecté pour voir les messages sur l'accueil)
     public function __construct()
     {
-        // $this->middleware('auth:sanctum')->except('index');
+        $this->middleware('auth:sanctum')->except('index');
     }
+
 
     /**
      * Display a listing of the resource.
@@ -25,31 +26,23 @@ class PostController extends Controller
         $posts = Post::latest()->get();
 
         // on charge leurs auteurs et leurs commentaires (avec auteurs)
-        $posts->load('user', 'comments.user');
+        // => commenté car déjà chargé via $with dans les modèles Post et Comment 
+        // $posts->load('user', 'comments.user');
 
         // On retourne les posts en JSON 
-        return response()->json($posts);
+        return response()->json([
+            'status' => true,
+            'message' => 'Posts récupérés avec succès',
+            'posts' => $posts
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:15|max:3000',
-                'tags' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         // sauvegarde du post en bdd
         $post = Post::create($request->all());
 
@@ -61,7 +54,11 @@ class PostController extends Controller
         }
 
         // on retourne le post créé en json avec un code de succès (201)
-        return response()->json([$post, 'Message créé avec succès'], 201);
+        return response()->json([
+            'status' => true,
+            'message' => 'Post créé avec succès',
+            'post' => $post
+        ], 201);
     }
 
     /**
@@ -69,31 +66,23 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json($post);
+        // on retourne le post en json 
+        return response()->json([
+            'status' => true,
+            'message' => 'Post récupéré avec succès',
+            'post' => $post
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
+        // policy pour vérifier que l'utilisateur peut modifier le post
         $this->authorize('update', $post);
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'content' => 'required|min:15|max:3000',
-                'tags' => 'required|min:5|max:50',
-                'image' => 'nullable|image|mimes:jpg,jpeg,png,svg|max:2048'
-            ],
-        );
-
-        // renvoi d'un ou plusieurs messages d'erreur si champ(s) incorrect(s)
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        // sauvegarde utilisateur en bdd
+        // modification post en bdd
         $post->update($request->all());
 
         // sauvegarde de l'image (si envoyée)
@@ -104,7 +93,11 @@ class PostController extends Controller
         }
 
         // On retourne la réponse JSON
-        return response()->json([$post, 'Message modifié avec succès']);
+        return response()->json([
+            'status' => true,
+            'message' => 'Post modifié avec succès',
+            'post' => $post
+        ]);
     }
 
     /**
@@ -112,9 +105,15 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        // policy pour vérifier que l'utilisateur peut supprimer le post
         $this->authorize('delete', $post);
 
-        $post->delete();
-        return response()->json([$post, 'Message supprimé']);
+        $post->delete(); // suppression post via syntaxe Eloquent
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Post supprimé',
+            'post' => $post
+        ]);
     }
 }

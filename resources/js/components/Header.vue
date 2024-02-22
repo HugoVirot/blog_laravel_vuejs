@@ -13,8 +13,6 @@
                 <p class="text-white fs-3">Blog Laravel Vue JS</p>
             </div>
 
-            <div class="mt-3 d-none d-md-block" id="rightstripe"></div>
-
             <!-- hamburger -->
 
             <button class="navbar-toggler mt-3 d-md-none my-auto" type="button"

@@ -16,10 +16,17 @@
 
     <!-- Script Vite : pour compiler et utiliser les fichiers css et js -->
     @vite(['resources/js/app.js', 'resources/css/app.css'])
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
-    <div id="app"></div>
+    <div id="app"></div> <!-- le front-end Vue JS est injecté ici -->
+    <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
 </body>
 
 </html>

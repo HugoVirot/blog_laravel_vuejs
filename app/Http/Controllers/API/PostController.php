@@ -51,6 +51,7 @@ class PostController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('images'), $imageName);
+            $post->update(['image' => $imageName]);
         }
 
         // on retourne le post créé en json avec un code de succès (201)
@@ -90,6 +91,7 @@ class PostController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('images'), $imageName);
+            $post->update(['image' => $imageName]);
         }
 
         // On retourne la réponse JSON

@@ -54,6 +54,7 @@ class UserController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('images'), $imageName);
+            $user->update(['image' => $imageName]);
         }
 
         // on retourne l'utilisateur créé en json avec un code de succès (201)
@@ -98,6 +99,7 @@ class UserController extends Controller
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('images'), $imageName);
+            $user->update(['image' => $imageName]);
         }
 
         // si nouveau mdp choisi (et qui respecte bien sûr les critères de sécurité du validateur)

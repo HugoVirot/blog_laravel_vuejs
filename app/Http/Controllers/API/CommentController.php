@@ -6,15 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CommentController extends Controller
 {
     // middleware sanctum pour exiger une preuve de connexion : soit le token, soit le cookie csrf
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
+        //$this->middleware('auth:sanctum');
     }
 
     /**
@@ -79,7 +77,7 @@ class CommentController extends Controller
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
         // policy pour vérifier que l'utilisateur peut modifier le commentaire
-        $this->authorize('update', $comment);
+        //$this->authorize('update', $comment);
 
         // sauvegarde des modifications en bdd
         $comment->update($request->all());
@@ -107,7 +105,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         // policy pour vérifier que l'utilisateur peut supprimer le commentaire
-        $this->authorize('delete', $comment);
+        //$this->authorize('delete', $comment);
 
         $comment->delete(); // suppression commentaire via syntaxe Eloquent
 

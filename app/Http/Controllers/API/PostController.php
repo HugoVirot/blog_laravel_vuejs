@@ -13,7 +13,7 @@ class PostController extends Controller
     // appliqué sur toutes les routes sauf index (pas besoin d'être connecté pour voir les messages sur l'accueil)
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('index');
+       // $this->middleware('auth:sanctum')->except('index');
     }
 
 
@@ -81,7 +81,7 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         // policy pour vérifier que l'utilisateur peut modifier le post
-        $this->authorize('update', $post);
+       // $this->authorize('update', $post);
 
         // modification post en bdd
         $post->update($request->all());
@@ -108,7 +108,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         // policy pour vérifier que l'utilisateur peut supprimer le post
-        $this->authorize('delete', $post);
+        //$this->authorize('delete', $post);
 
         $post->delete(); // suppression post via syntaxe Eloquent
 

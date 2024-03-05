@@ -41,6 +41,7 @@ return array(
         "numeric" => "La valeur de :attribute ne peut être supérieure à :max.",
         "file"    => "Le fichier :attribute ne peut être plus gros que :max kilobytes.",
         "string"  => "Le texte de :attribute ne peut contenir plus de :max caractères.",
+        "image"    =>"Le fichier :attribute ne peut être plus gros que :max kilobytes."
     ),
     "mimes"            => "Le champ :attribute doit être un fichier de type : :values.",
     "min"              => array(

@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'email|max:50',
+            'email' => 'nullable|email|max:50',
             'oldPassword' => 'nullable',
             'password' => [
                 'nullable', 'confirmed',
@@ -54,6 +54,7 @@ class UpdateUserRequest extends FormRequest
             'password.string' => 'Le mot de passe doit être une chaîne de caractères.',
             'password.min' => 'Le mot de passe doit faire au moins 8 caractères.',
             'password.confirmed' => 'Confirmation du mot de passe incorrecte.',
+            'image.max' => 'Votre image est trop lourde : elle doit faire moins de 2 Mo.'
         ];
     }
 }

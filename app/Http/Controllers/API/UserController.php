@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -14,7 +14,7 @@ class UserController extends Controller
     // appliqué sur toutes les routes sauf store (pas besoin d'être connecté pour créer un utilisateur)
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except('store');
+        //$this->middleware('auth:sanctum')->except('store');
     }
 
 
@@ -40,7 +40,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-
         // sauvegarde utilisateur en bdd
         $user = User::create([
             'pseudo' => $request->pseudo,
@@ -86,16 +85,18 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         // policy pour vérifier que l'utilisateur peut modifier le compte
-        $this->authorize('update', $user);
+        //$this->authorize('update', $user);
 
         // On modifie les informations de l'utilisateur
-        $user->update([
-            'email' => $request->email,
-            'image' => $request->image,
-        ]);
+        if ($request->email) {
+            $user->update([
+                'email' => $request->email
+            ]);
+        }
 
         // sauvegarde de la nouvelle image (si envoyée)
         if ($request->image) {
+            //dd("je passe dans modif image");
             $image = $request->file('image');
             $imageName = time() . '.' . $image->extension();
             $image->move(public_path('images'), $imageName);
@@ -116,7 +117,7 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'mot de passe actuel non renseigné ou incorrect',
+                    'error' => 'mot de passe actuel non renseigné ou incorrect',
                     'user' => $user
                 ], 400);
             }
@@ -137,7 +138,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // policy pour vérifier que l'utilisateur peut supprimer le compte
-        $this->authorize('delete', $user);
+        //$this->authorize('delete', $user);
 
         // on supprimer l'utilisateur en base de données
         $user->delete();
